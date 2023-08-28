@@ -31,6 +31,7 @@ public class OfertaServicio {
             Oferta ofertaQueExiste = ofertaEncontrada.get();
 
             ofertaQueExiste.setTitulo(datosAModificar.getTitulo());
+            ofertaQueExiste.setDescripcion(datosAModificar.getDescripcion());
 
             return(this.ofertaRepositorio.save(ofertaQueExiste));
 
@@ -39,13 +40,34 @@ public class OfertaServicio {
         }
     }
     public Oferta buscarOfertaPorId(Integer id) throws Exception{
-        return null;
+        Optional<Oferta> ofertaEncontradaPorId = this.ofertaRepositorio.findById(id);
+
+        if(ofertaEncontradaPorId.isEmpty()){
+            throw new Exception("Oferta no encontrada");
+        }
+
+        return ofertaEncontradaPorId.get();
     }
 
     public List<Oferta> buscarTodasOfertas() throws Exception{
-        return null;
+        try {
+            List<Oferta>listaOferta = this.ofertaRepositorio.findAll();
+            return listaOferta;
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
     public Boolean eliminarOferta(Integer id) throws Exception{
-        return true;
+        try{
+            Optional<Oferta> ofertaOpcional = this.ofertaRepositorio.findById(id);
+            if (ofertaOpcional.isPresent()){
+                this.ofertaRepositorio.deleteById(id);
+                return true;
+            }else {
+                throw new Exception("Oferta no encontrada");
+            }
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 }

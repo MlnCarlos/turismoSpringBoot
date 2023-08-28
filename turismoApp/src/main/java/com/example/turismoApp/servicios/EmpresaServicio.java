@@ -60,14 +60,40 @@ public class EmpresaServicio {
         }
     }
     public Empresa buscarEmpresaPorId(Integer id) throws Exception{
-        return null;
+        try {
+            Optional<Empresa> empresaEncontradaPorId = this.empresaRepositorio.findById(id);
+
+            if(empresaEncontradaPorId.isEmpty()){
+                throw new Exception("Empresa no encontrada");
+            }
+
+            return empresaEncontradaPorId.get();
+
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
     public List<Empresa> buscarTodasEmpresas() throws Exception{
-        return null;
+        try {
+            List<Empresa>listaEmpresa = this.empresaRepositorio.findAll();
+            return listaEmpresa;
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
     public Boolean eliminarEmpresa(Integer id) throws Exception{
-        return true;
+        try{
+            Optional<Empresa> empresaOpcional = this.empresaRepositorio.findById(id);
+            if (empresaOpcional.isPresent()){
+                this.empresaRepositorio.deleteById(id);
+                return true;
+            }else {
+                throw new Exception("Empresa no encontrada");
+            }
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
 }
