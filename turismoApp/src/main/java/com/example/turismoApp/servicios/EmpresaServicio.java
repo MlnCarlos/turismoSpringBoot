@@ -1,17 +1,15 @@
 package com.example.turismoApp.servicios;
 
-import Validaciones.EmpresaValidacion;
 import com.example.turismoApp.modelos.Empresa;
 import com.example.turismoApp.repositorios.EmpresaRepositorio;
-import com.sun.jdi.event.ExceptionEvent;
+import com.example.turismoApp.validaciones.EmpresaValidacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
-public class
-EmpresaServicio {
+public class EmpresaServicio {
     @Autowired
     EmpresaRepositorio empresaRepositorio;
     @Autowired
@@ -37,7 +35,7 @@ EmpresaServicio {
     public Empresa modificarEmpresa(Integer id, Empresa datosAModificar) throws Exception{
         try {
             //VALIDAMOS LA INFORMACIÓN
-            if (this.empresaValidacion.validarNombre(datosAModificar.getNombre())){
+            if (!this.empresaValidacion.validarNombre(datosAModificar.getNombre())){
                 throw new Exception("Longitud de caracteres invalido");
             }
 
